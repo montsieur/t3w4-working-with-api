@@ -1,6 +1,11 @@
 console.log('Pokemon Journey begins...');
 
 const encounterButton = document.getElementById('pokemonEncounterButton');
+const pokemonRenderArea = document.getElementById('encounterPokemonArea');
+
+function renderPokemonData(pokemonData){
+    pokemonRenderArea.innerText = pokemonData.name;
+}
 
 async function getPokemon(){
     console.log("Looking for a wild pokemon");
@@ -8,8 +13,15 @@ async function getPokemon(){
     let apiResponse = await fetch("https://pokeapi.co/api/v2/pokemon/ditto");
     let apiData = await apiResponse.json();
 
-    let pokemonName = apiData.name;
-    return pokemonName;
+    // Fetch name, type, image, cry
+    // let pokemonName = apiData.name;
+
+    return {
+        name: apiData.name,
+        types: apiData.types,
+        image: apiData.sprites.other.home.front_default,
+        sound: apiData.cries.latest
+    };
 }
 
 // encounterButton.addEventListener('click', getPokemon);
@@ -20,4 +32,8 @@ encounterButton.addEventListener('click', async(event) => {
     let pokemonResult = await getPokemon();
 
     console.log(pokemonResult);
+
+    renderPokemonData(pokemonResult);
 });
+
+
